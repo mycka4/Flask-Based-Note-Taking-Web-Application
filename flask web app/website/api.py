@@ -5,12 +5,12 @@ from . import db
 
 api = Blueprint('api_blueprint', __name__, url_prefix='/api')
 
-# Test route to check if API is working
+
 @api.route('/test', methods=['GET'])
 def test_api():
     return jsonify({"message": "API is working!"}), 200
 
-# Debug route to check current user
+
 @api.route('/debug/user', methods=['GET'])
 @login_required
 def debug_user():
@@ -20,7 +20,6 @@ def debug_user():
         "is_authenticated": current_user.is_authenticated
     }), 200
 
-# Debug route to see all notes in database
 @api.route('/debug/all-notes', methods=['GET'])
 def debug_all_notes():
     all_notes = Note.query.all()
@@ -30,7 +29,6 @@ def debug_all_notes():
         'user_id': n.user_id
     } for n in all_notes]), 200
 
-# Test route to create note without authentication (for testing only)
 @api.route('/test/notes', methods=['POST'])
 def test_create_note():
     data = request.get_json()
@@ -44,7 +42,7 @@ def test_create_note():
     
     return jsonify({"message": "Test note created", "id": new_note.id}), 201
 
-# Production routes with authentication
+
 @api.route('/notes', methods=['GET'])
 @login_required
 def get_notes():
@@ -55,7 +53,7 @@ def get_notes():
 @login_required
 def get_note(id):
     note = Note.query.get_or_404(id)
-    print(f"Note user_id: {note.user_id}, Current user_id: {current_user.id}")  # Debug print
+    print(f"Note user_id: {note.user_id}, Current user_id: {current_user.id}") 
     if note.user_id != current_user.id:
         return jsonify({"error": f"Access denied. Note belongs to user {note.user_id}, you are user {current_user.id}"}), 403
     return jsonify({'id': note.id, 'data': note.data}), 200

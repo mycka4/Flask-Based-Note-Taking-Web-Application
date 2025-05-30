@@ -4,7 +4,6 @@ from .models import Note
 from . import db
 import json
 
-# Changed blueprint name to 'views' for consistency
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
@@ -21,7 +20,7 @@ def home():
             db.session.commit()
             flash('Note added!', category='success')
 
-        return redirect(url_for('views.home'))  # Fixed: changed from 'views_blueprint.home' to 'views.home'
+        return redirect(url_for('views.home'))  
   
     user_notes = Note.query.filter_by(user_id=current_user.id).all()
     

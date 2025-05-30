@@ -15,11 +15,11 @@ def create_app():
 
     from .views import views
     from .auth import auth
-    from .api import api  # Add this import
+    from .api import api  
     
     app.register_blueprint(views, url_prefix = '/')
     app.register_blueprint(auth, url_prefix = '/')
-    app.register_blueprint(api)  # Add this registration - no url_prefix needed since it's defined in the blueprint
+    app.register_blueprint(api)  
     
     from .models import User, Note
     

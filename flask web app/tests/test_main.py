@@ -5,7 +5,6 @@ import tempfile
 from unittest.mock import patch
 from werkzeug.security import generate_password_hash
 
-# Import your application modules
 import sys
 sys.path.append('.')
 from website import create_app, db
@@ -32,7 +31,6 @@ class BaseTestCase(unittest.TestCase):
         
         db.create_all()
         
-        # Create test users
         self.test_user = User(
             email='test@example.com',
             first_name='Test',
@@ -155,10 +153,10 @@ class TestAuth(BaseTestCase):
     def test_signup_validation_errors(self):
         """Test signup validation scenarios"""
         test_cases = [
-            {'email': 'a@b', 'firstName': 'User', 'password1': 'pass', 'password2': 'pass'},  # Short email
-            {'email': 'new@example.com', 'firstName': 'A', 'password1': 'pass', 'password2': 'pass'},  # Short name
-            {'email': 'new@example.com', 'firstName': 'User', 'password1': 'p1', 'password2': 'p2'},  # Mismatch
-            {'email': 'new@example.com', 'firstName': 'User', 'password1': '12', 'password2': '12'},  # Short pass
+            {'email': 'a@b', 'firstName': 'User', 'password1': 'pass', 'password2': 'pass'},  
+            {'email': 'new@example.com', 'firstName': 'A', 'password1': 'pass', 'password2': 'pass'},  
+            {'email': 'new@example.com', 'firstName': 'User', 'password1': 'p1', 'password2': 'p2'},  
+            {'email': 'new@example.com', 'firstName': 'User', 'password1': '12', 'password2': '12'},  
         ]
         for data in test_cases:
             response = self.client.post('/sign-up', data=data)

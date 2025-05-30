@@ -1,9 +1,7 @@
 from website import create_app
 
-
 app = create_app()
 
-# Debug route to see all registered routes
 @app.route('/debug/routes')
 def list_routes():
     import urllib.parse
