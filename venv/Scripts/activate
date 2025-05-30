@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\MYCKA\Flask-Based-Note-Taking-Web-Application\venv"
+VIRTUAL_ENV="C:\Users\MYCKA\Downloads\Flask-Based-Note-Taking-Web-Application-main\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

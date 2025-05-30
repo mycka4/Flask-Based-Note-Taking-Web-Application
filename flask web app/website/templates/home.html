@@ -1,7 +1,7 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}{% block content %} 
+<!--{% extends "base.html" %} {% block title %}Home{% endblock %}{% block content %} 
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
+    {% for note in notes %}
     <li class="list-group-item">
       {{ note.data }}
       <button type="button" class="close" onClick="deleteNote({{ note.id }})">
@@ -17,4 +17,48 @@
       <button type="submit" class="btn btn-primary">Add Note</button>
     </div>
   </form>
-{% endblock %}
+
+{% endblock %} -->
+
+<!-- templates/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.first_name }}!</h1>
+
+    <form method="POST">
+        <textarea name="note" placeholder="Write a note..."></textarea>
+        <button type="submit">Add Note</button>
+    </form>
+
+    <h2>Your Notes:</h2>
+    <ul id="notes-list">
+        <!-- Notes will be loaded here -->
+    </ul>
+
+    <script>
+        async function loadNotes() {
+            const response = await fetch('/api/notes');
+            if (!response.ok) {
+                document.getElementById('notes-list').innerHTML = '<li>Error loading notes</li>';
+                return;
+            }
+
+            const notes = await response.json();
+            const list = document.getElementById('notes-list');
+            list.innerHTML = '';
+
+            for (const note of notes) {
+                const li = document.createElement('li');
+                li.textContent = note.data;
+                list.appendChild(li);
+            }
+        }
+
+        window.onload = loadNotes;
+    </script>
+</body>
+</html>
