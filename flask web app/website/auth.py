@@ -4,7 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   ##means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
 
-auth = Blueprint('auth_blueprint', __name__)
+# Changed blueprint name to 'auth' for consistency
+auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -19,18 +20,21 @@ def login():
             if check_password_hash(user.password, password):
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
+                return redirect(url_for('views.home'))  # Added redirect after successful login
             else:
                 flash('Incorrect password, try again.', category='error')
         else:
             flash('Email does not exist.', category='error')
     
-    return render_template("login.html", user = current_user)
+    return render_template("login.html", user=current_user)
+
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth_blueprint.login'))
+    return redirect(url_for('auth.login'))  # Fixed: changed from 'auth_blueprint.login' to 'auth.login'
+
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def signup():
@@ -55,9 +59,9 @@ def signup():
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user)
+            login_user(new_user, remember=True)
             
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
             
-    return render_template("sign-up.html", user = current_user)
+    return render_template("sign-up.html", user=current_user)

@@ -4,7 +4,8 @@ from .models import Note
 from . import db
 import json
 
-views = Blueprint('views_blueprint', __name__)
+# Changed blueprint name to 'views' for consistency
+views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
@@ -20,7 +21,7 @@ def home():
             db.session.commit()
             flash('Note added!', category='success')
 
-        return redirect(url_for('views_blueprint.home')) 
+        return redirect(url_for('views.home'))  # Fixed: changed from 'views_blueprint.home' to 'views.home'
   
     user_notes = Note.query.filter_by(user_id=current_user.id).all()
     
@@ -41,4 +42,3 @@ def delete_note():
             return jsonify({"message": "Unauthorized action"}), 403
     else:
         return jsonify({"message": "Note not found"}), 404
-    
